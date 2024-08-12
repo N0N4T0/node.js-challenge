@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common'
 import { DatabaseModule } from '../database/database.module'
-import { CreateAccountController } from './controllers/create-account.controller'
-import { RegisterStudentUseCase } from '../domain/finance/application/usecases'
+import {
+  AuthenticateStudentUseCase,
+  RegisterStudentUseCase,
+} from '../domain/finance/application/usecases'
 import { CryptographyModule } from '../cryptography/cryptography.module'
+import { CreateAccountController, AuthenticateController } from './controllers'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
-  controllers: [CreateAccountController],
-  providers: [RegisterStudentUseCase],
+  controllers: [CreateAccountController, AuthenticateController],
+  providers: [RegisterStudentUseCase, AuthenticateStudentUseCase],
 })
 export class HttpModule {}
