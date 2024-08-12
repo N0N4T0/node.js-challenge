@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common'
-import { DatabaseModule } from '../database/database.module'
+import { DatabaseModule } from '@/infra/database/database.module'
+
+import { CryptographyModule } from '@/infra/cryptography/cryptography.module'
+import { CreateAccountController, AuthenticateController } from './controllers'
+
 import {
   AuthenticateStudentUseCase,
   RegisterStudentUseCase,
-} from '../domain/finance/application/usecases'
-import { CryptographyModule } from '../cryptography/cryptography.module'
-import { CreateAccountController, AuthenticateController } from './controllers'
+} from '@/infra/domain/finance/application'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],

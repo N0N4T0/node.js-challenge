@@ -1,5 +1,4 @@
-import { StudentsRepository } from '@/infra/domain/finance/application/repositories/students-repository'
-import { Student } from '@/infra/domain/finance/enterprise'
+import { Student, StudentsRepository } from '@/infra/domain/finance'
 
 export class InMemoryStudentsRepository implements StudentsRepository {
   public items: Student[] = []

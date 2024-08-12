@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common'
 import { PrismaService } from './prisma/prisma.service'
-import { StudentsRepository } from '../domain/finance/application/repositories/students-repository'
-import { PrismaStudentsRepository } from './prisma/repositories/prisma-students-repository'
+
+import { StudentsRepository } from '@/infra/domain/finance'
+import { PrismaStudentsRepository } from '@/infra/database/prisma'
 
 @Module({
   providers: [

@@ -1,6 +1,5 @@
 import { hash, compare } from 'bcryptjs'
-import { HashGenerator } from '../domain/finance/application/cryptography/hash-generator'
-import { HashComparer } from '../domain/finance/application/cryptography/hash-comparer'
+import { HashComparer, HashGenerator } from '@/infra/domain/finance'
 
 export class BcryptHasher implements HashGenerator, HashComparer {
   private HASH_SALT_LENGTH = 8

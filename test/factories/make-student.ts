@@ -1,7 +1,7 @@
 import { UniqueEntityID } from '@/core'
-import { PrismaStudentMapper } from '@/infra/database/prisma/mappers/prisma-student-mapper'
+import { PrismaStudentMapper } from '@/infra/database/prisma'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
-import { StudentProps, Student } from '@/infra/domain/finance/enterprise'
+import { StudentProps, Student } from '@/infra/domain/finance'
 import { faker } from '@faker-js/faker'
 import { Injectable } from '@nestjs/common'
 
