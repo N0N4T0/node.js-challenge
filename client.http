@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:3333
-# @authToken = {{authenticate.response.body.access_token}}
+@authToken = {{authenticate.response.body.access_token}}
 
 # @name create_account
 POST {{baseUrl}}/accounts
@@ -19,4 +19,15 @@ Content-Type: application/json
 {
   "email": "user1@example.com",
   "password": "123"
+}
+
+# @name create_transaction
+POST {{baseUrl}}/transactions
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "description": "Luz",
+  "value": 123,
+  "type": "DEBIT"
 }
