@@ -2,9 +2,9 @@ import { BadRequestException, Body, Controller, Post } from '@nestjs/common'
 import { TransactionType } from '@/core'
 import { CreateTransactionUseCase } from '@/infra/domain/finance'
 import { z } from 'zod'
-import { ZodValidationPipe } from '@/infra/http'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
+import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 
 const createTransactionBodySchema = z.object({
   description: z.string(),

@@ -13,8 +13,8 @@ import {
   RegisterStudentUseCase,
   StudentAlreadyExistsError,
 } from '@/infra/domain/finance/application/usecases'
-import { ZodValidationPipe } from '../..'
 import { Public } from '@/infra/auth/publlic'
+import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 
 const createAccountBodySchema = z.object({
   name: z.string(),

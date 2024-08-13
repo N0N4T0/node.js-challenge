@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { Transaction, TransactionsRepository } from '@/infra/domain/finance'
+import { Transaction } from '@/infra/domain/finance/enterprise/entities/transaction'
+import { TransactionsRepository } from '@/infra/domain/finance/application/repositories/transactions-repository'
 import { Either, right, TransactionType, UniqueEntityID } from '@/core'
 
 export interface TransactionUseCaseRequest {
