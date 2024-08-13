@@ -21,13 +21,14 @@ Content-Type: application/json
   "password": "123"
 }
 
+###
 # @name create_transaction
 POST {{baseUrl}}/transactions
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "description": "Luz",
-  "value": 123,
+  "description": "Pizza",
+  "value": 89.99,
   "type": "DEBIT"
 }
