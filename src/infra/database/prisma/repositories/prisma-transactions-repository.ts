@@ -15,4 +15,29 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
       data,
     })
   }
+
+  async findById(id: string): Promise<Transaction | null> {
+    const transaction = await this.prisma.transaction.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!transaction) {
+      return null
+    }
+
+    return PrismaTransactionMapper.toDomain(transaction)
+  }
+
+  async save(transaction: Transaction): Promise<void> {
+    const data = PrismaTransactionMapper.toPrisma(transaction)
+
+    await this.prisma.transaction.update({
+      where: {
+        id: transaction.id.toString(),
+      },
+      data,
+    })
+  }
 }

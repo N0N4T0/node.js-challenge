@@ -3,14 +3,14 @@ import { Transaction } from '@/infra/domain/finance/enterprise/entities/transact
 import { TransactionsRepository } from '@/infra/domain/finance/application/repositories/transactions-repository'
 import { Either, right, TransactionType, UniqueEntityID } from '@/core'
 
-export interface TransactionUseCaseRequest {
+export interface CreateTransactionUseCaseRequest {
   userId: string
   description: string
   value: number
   type: TransactionType
 }
 
-type TransactionUseCaseResponse = Either<
+type CreateTransactionUseCaseResponse = Either<
   null,
   {
     transaction: Transaction
@@ -26,7 +26,7 @@ export class CreateTransactionUseCase {
     description,
     type,
     value,
-  }: TransactionUseCaseRequest): Promise<TransactionUseCaseResponse> {
+  }: CreateTransactionUseCaseRequest): Promise<CreateTransactionUseCaseResponse> {
     const transaction = Transaction.create({
       userId: new UniqueEntityID(userId),
       description,
