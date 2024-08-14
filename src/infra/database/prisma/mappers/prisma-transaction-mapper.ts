@@ -15,6 +15,8 @@ export class PrismaTransactionMapper {
         type: TransactionType[raw.type],
         userId: raw.userId ? new UniqueEntityID(raw.userId) : null,
         value: new Prisma.Decimal(raw.value).toNumber(),
+        createdAt: raw.createdAt,
+        updatedAt: raw.updatedAt,
       },
       new UniqueEntityID(raw.id),
     )
@@ -28,6 +30,9 @@ export class PrismaTransactionMapper {
       type: TransactionTypeToPrisma[transaction.type],
       userId: transaction.userId ? transaction.userId.toString() : null,
       value: new Prisma.Decimal(transaction.value).toNumber(),
+      createdAt: transaction.createdAt,
+      updatedAt: transaction.updatedAt,
+      id: transaction.id.toString(),
     }
   }
 }
