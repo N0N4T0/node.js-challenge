@@ -40,12 +40,15 @@ $ npm run start:prod
 ```bash
 # unit tests
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
 ```
 
 ### Insomnia Collection
+
+Encontrado no arquivo
+
+```
+kinvo-finance-api.json
+```
 
 ## Context
 
@@ -60,14 +63,14 @@ $ npm run test:e2e
 ### Desenvolvedor Júnior
 
 ```
-[ ] Filtro na listagem de movimentações por data (data inicial e data final);
+[x] Filtro na listagem de movimentações por data (data inicial e data final);
 [x] Paginação na listagem de movimentações.
 ```
 
 ### Desenvolvedor Pleno
 
 ```
-[ ] Todos os requisitos do Júnior;
+[x] Todos os requisitos do Júnior;
 [x] API Rest semântica (se escolheu desenvolver uma API Rest);
 [x] Arquitetura minimamente escalável;
 [x] Cobertura mínima de testes automatizados.
@@ -76,7 +79,7 @@ $ npm run test:e2e
 ### Desenvolvedor Sênior
 
 ```
-[ ] Todos os requisitos do Pleno;
+[x] Todos os requisitos do Pleno;
 [x] Autenticação:
   [x] Cadastro de usuário;
   [x] Login;
