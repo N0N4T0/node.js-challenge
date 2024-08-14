@@ -53,7 +53,10 @@ export class EditTransactionUseCase {
 
     const { sumOfCredits } = await this.transactionsRepository.getBalance()
 
-    if (transaction.value > sumOfCredits) {
+    if (
+      transaction.type === TransactionType.DEBIT &&
+      transaction.value > sumOfCredits
+    ) {
       return left(new NotAllowedError())
     }
 
