@@ -51,7 +51,11 @@ export class EditTransactionUseCase {
     transaction.type = type
     transaction.value = value
 
-    // TODO validate balance before edit a transaction
+    const { sumOfCredits } = await this.transactionsRepository.getBalance()
+
+    if (transaction.value > sumOfCredits) {
+      return left(new NotAllowedError())
+    }
 
     await this.transactionsRepository.save(transaction)
 

@@ -1,7 +1,14 @@
 import { Injectable } from '@nestjs/common'
 import { Transaction } from '@/infra/domain/finance/enterprise/entities/transaction'
 import { TransactionsRepository } from '@/infra/domain/finance/application/repositories/transactions-repository'
-import { Either, right, TransactionType, UniqueEntityID } from '@/core'
+import {
+  Either,
+  left,
+  NotAllowedError,
+  right,
+  TransactionType,
+  UniqueEntityID,
+} from '@/core'
 
 export interface CreateTransactionUseCaseRequest {
   userId: string
@@ -11,7 +18,7 @@ export interface CreateTransactionUseCaseRequest {
 }
 
 type CreateTransactionUseCaseResponse = Either<
-  null,
+  NotAllowedError,
   {
     transaction: Transaction
   }
@@ -27,7 +34,12 @@ export class CreateTransactionUseCase {
     type,
     value,
   }: CreateTransactionUseCaseRequest): Promise<CreateTransactionUseCaseResponse> {
-    // TODO validate balance before create a transaction
+    const { extract } = await this.transactionsRepository.getBalance()
+
+    if (extract === 0 && type === TransactionType.DEBIT) {
+      return left(new NotAllowedError())
+    }
+
     const transaction = Transaction.create({
       userId: new UniqueEntityID(userId),
       description,
