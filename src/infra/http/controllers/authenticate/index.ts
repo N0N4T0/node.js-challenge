@@ -52,5 +52,3 @@ export class AuthenticateController {
     return { access_token: accessToken }
   }
 }
-
-// TODO test e2e

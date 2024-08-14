@@ -52,4 +52,3 @@ export class RegisterStudentUseCase {
     })
   }
 }
-// TODO test

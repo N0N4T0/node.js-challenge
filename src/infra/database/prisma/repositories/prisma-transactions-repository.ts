@@ -3,7 +3,11 @@ import { PrismaService } from '../prisma.service'
 import { TransactionsRepository } from '@/infra/domain/finance'
 import { PrismaTransactionMapper } from '../mappers'
 import { Transaction } from '@/infra/domain/finance/enterprise'
-import { TransactionsPaginationParams } from '@/core'
+import {
+  TransactionsBalance,
+  TransactionsPaginationParams,
+  TransactionType,
+} from '@/core'
 
 @Injectable()
 export class PrismaTransactionsRepository implements TransactionsRepository {
@@ -56,6 +60,43 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
     })
 
     return transactions.map(PrismaTransactionMapper.toDomain)
+  }
+
+  async getBalance(): Promise<TransactionsBalance> {
+    const result = await Promise.all([
+      this.prisma.transaction.findMany({
+        where: {
+          type: TransactionType.CREDIT,
+        },
+      }),
+      this.prisma.transaction.findMany({
+        where: {
+          type: TransactionType.DEBIT,
+        },
+      }),
+    ])
+
+    const [allCredits, allDebits] = result
+
+    const allCreditsMapper = allCredits.map(PrismaTransactionMapper.toDomain)
+    const allDebitsMapper = allDebits.map(PrismaTransactionMapper.toDomain)
+
+    const sumOfCredits = allCreditsMapper.reduce(
+      (acc, prev) => acc + prev.value,
+      0,
+    )
+    const sumOfDebits = allDebitsMapper.reduce(
+      (acc, prev) => acc + prev.value,
+      0,
+    )
+
+    const balance = {
+      extract: sumOfCredits - sumOfDebits,
+      sumOfCredits,
+      sumOfDebits,
+    }
+
+    return balance
   }
 
   async save(transaction: Transaction): Promise<void> {

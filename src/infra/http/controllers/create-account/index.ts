@@ -53,4 +53,3 @@ export class CreateAccountController {
     }
   }
 }
-// TODO test e2e

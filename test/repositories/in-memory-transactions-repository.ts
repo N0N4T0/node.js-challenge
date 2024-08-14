@@ -1,4 +1,8 @@
-import { TransactionsPaginationParams } from '@/core'
+import {
+  TransactionsBalance,
+  TransactionsPaginationParams,
+  TransactionType,
+} from '@/core'
 import { Transaction, TransactionsRepository } from '@/infra/domain/finance'
 
 export class InMemoryTransactionsRepository implements TransactionsRepository {
@@ -28,6 +32,26 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
     const itemIndex = this.items.findIndex((item) => item.id === transaction.id)
 
     this.items.splice(itemIndex, 1)
+  }
+
+  async getBalance(): Promise<TransactionsBalance> {
+    const allCredits = this.items.filter(
+      (credit) => credit.type === TransactionType.CREDIT,
+    )
+    const sumOfCredits = allCredits.reduce((acc, prev) => acc + prev.value, 0)
+
+    const allDebits = this.items.filter(
+      (debit) => debit.type === TransactionType.DEBIT,
+    )
+    const sumOfDebits = allDebits.reduce((acc, prev) => acc + prev.value, 0)
+
+    const balance = sumOfCredits - sumOfDebits
+
+    return {
+      extract: balance,
+      sumOfCredits,
+      sumOfDebits,
+    }
   }
 
   async findManyByPeriod({ page }: TransactionsPaginationParams) {

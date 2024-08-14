@@ -8,6 +8,7 @@ import {
   CreateTransactionController,
   DeleteTransactionController,
   EditTransactionController,
+  GetTransactionsBalanceController,
   GetTransactionsController,
 } from './controllers'
 
@@ -18,6 +19,7 @@ import {
   EditTransactionUseCase,
   DeleteTransactionUseCase,
   GetTransactionsUseCase,
+  GetTransactionsBalanceUseCase,
 } from '@/infra/domain/finance/application'
 
 @Module({
@@ -29,6 +31,7 @@ import {
     EditTransactionController,
     DeleteTransactionController,
     GetTransactionsController,
+    GetTransactionsBalanceController,
   ],
   providers: [
     RegisterStudentUseCase,
@@ -37,6 +40,7 @@ import {
     EditTransactionUseCase,
     DeleteTransactionUseCase,
     GetTransactionsUseCase,
+    GetTransactionsBalanceUseCase,
   ],
 })
 export class HttpModule {}
