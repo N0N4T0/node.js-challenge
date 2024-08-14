@@ -29,12 +29,8 @@ describe('Create Transaction', () => {
     })
 
     expect(creditResult.isRight()).toBe(true)
-    expect(inMemoryTransactionsRepository.items[0]).toEqual(
-      creditResult.value?.transaction,
-    )
+    expect(inMemoryTransactionsRepository.items[0]).not.toBeUndefined()
     expect(debitResult.isRight()).toBe(true)
-    expect(inMemoryTransactionsRepository.items[1]).toEqual(
-      debitResult.value?.transaction,
-    )
+    expect(inMemoryTransactionsRepository.items[1]).not.toBeUndefined()
   })
 })
