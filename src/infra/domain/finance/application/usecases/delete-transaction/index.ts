@@ -32,8 +32,6 @@ export class DeleteTransactionUseCase {
     const transaction =
       await this.transactionsRepository.findById(transactionId)
 
-    console.log('transactionId', transactionId)
-
     if (!transaction) {
       return left(new ResourceNotFoundError())
     }

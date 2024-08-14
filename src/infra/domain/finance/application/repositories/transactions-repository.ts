@@ -1,4 +1,4 @@
-import { PaginationParams } from '@/core'
+import { TransactionsPaginationParams } from '@/core'
 import { Transaction } from '@/infra/domain/finance/enterprise/entities/transaction'
 
 export abstract class TransactionsRepository {
@@ -10,5 +10,7 @@ export abstract class TransactionsRepository {
 
   abstract delete(transaction: Transaction): Promise<void>
 
-  abstract findManyByPeriod(params: PaginationParams): Promise<Transaction[]>
+  abstract findManyByPeriod(
+    params: TransactionsPaginationParams,
+  ): Promise<Transaction[]>
 }

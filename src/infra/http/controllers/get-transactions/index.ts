@@ -1,5 +1,4 @@
 import { BadRequestException, Controller, Get, Query } from '@nestjs/common'
-import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { GetTransactionsUseCase } from '@/infra/domain/finance'
 import { TransactionPresenter } from '../../presenters/transaction-presenter'
@@ -9,20 +8,32 @@ const pageQueryParamSchema = z
   .optional()
   .default('1')
   .transform(Number)
-  .pipe(z.number().min(1))
 
-const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
+const dateQueryParamSchema = z.string().optional().pipe(z.date().optional())
 
-type PageQueryParamSchema = z.infer<typeof pageQueryParamSchema>
+const queryParamsSchema = z.object({
+  page: pageQueryParamSchema,
+  initialDate: dateQueryParamSchema,
+  finalDate: dateQueryParamSchema,
+})
+
+type QueryParamsSchema = z.infer<typeof queryParamsSchema>
 
 @Controller('/transactions')
 export class GetTransactionsController {
   constructor(private getTransactions: GetTransactionsUseCase) {}
 
   @Get()
-  async handle(@Query('page', queryValidationPipe) page: PageQueryParamSchema) {
+  async handle(
+    @Query()
+    queryParams: QueryParamsSchema,
+  ) {
+    const { page, initialDate, finalDate } = queryParams
+
     const result = await this.getTransactions.execute({
       page,
+      finalDate,
+      initialDate,
     })
 
     if (result.isLeft()) {
