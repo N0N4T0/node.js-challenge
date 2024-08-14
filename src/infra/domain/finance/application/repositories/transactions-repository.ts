@@ -6,4 +6,6 @@ export abstract class TransactionsRepository {
   abstract save(transaction: Transaction): Promise<void>
 
   abstract findById(id: string): Promise<Transaction | null>
+
+  abstract delete(transaction: Transaction): Promise<void>
 }

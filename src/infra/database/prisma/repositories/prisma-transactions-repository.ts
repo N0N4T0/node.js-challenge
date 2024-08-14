@@ -40,4 +40,14 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
       data,
     })
   }
+
+  async delete(transaction: Transaction): Promise<void> {
+    const data = PrismaTransactionMapper.toPrisma(transaction)
+
+    await this.prisma.transaction.delete({
+      where: {
+        id: data.id,
+      },
+    })
+  }
 }

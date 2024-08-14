@@ -6,6 +6,7 @@ import {
   AuthenticateController,
   CreateAccountController,
   CreateTransactionController,
+  DeleteTransactionController,
   EditTransactionController,
 } from './controllers'
 
@@ -14,6 +15,7 @@ import {
   RegisterStudentUseCase,
   CreateTransactionUseCase,
   EditTransactionUseCase,
+  DeleteTransactionUseCase,
 } from '@/infra/domain/finance/application'
 
 @Module({
@@ -23,12 +25,14 @@ import {
     AuthenticateController,
     CreateTransactionController,
     EditTransactionController,
+    DeleteTransactionController,
   ],
   providers: [
     RegisterStudentUseCase,
     AuthenticateStudentUseCase,
     CreateTransactionUseCase,
     EditTransactionUseCase,
+    DeleteTransactionUseCase,
   ],
 })
 export class HttpModule {}
