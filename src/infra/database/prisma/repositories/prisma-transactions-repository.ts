@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma.service'
 import { TransactionsRepository } from '@/infra/domain/finance'
 import { PrismaTransactionMapper } from '../mappers'
 import { Transaction } from '@/infra/domain/finance/enterprise'
+import { PaginationParams } from '@/core'
 
 @Injectable()
 export class PrismaTransactionsRepository implements TransactionsRepository {
@@ -28,6 +29,18 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
     }
 
     return PrismaTransactionMapper.toDomain(transaction)
+  }
+
+  async findManyByPeriod({ page }: PaginationParams): Promise<Transaction[]> {
+    const transactions = await this.prisma.transaction.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return transactions.map(PrismaTransactionMapper.toDomain)
   }
 
   async save(transaction: Transaction): Promise<void> {

@@ -1,3 +1,4 @@
+import { PaginationParams } from '@/core'
 import { Transaction, TransactionsRepository } from '@/infra/domain/finance'
 
 export class InMemoryTransactionsRepository implements TransactionsRepository {
@@ -27,5 +28,13 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
     const itemIndex = this.items.findIndex((item) => item.id === transaction.id)
 
     this.items.splice(itemIndex, 1)
+  }
+
+  async findManyByPeriod({ page }: PaginationParams) {
+    const transactions = this.items
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+      .slice((page - 1) * 20, page * 20)
+
+    return transactions
   }
 }

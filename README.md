@@ -43,9 +43,6 @@ $ npm run test
 
 # e2e tests
 $ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ### Insomnia Collection
@@ -64,16 +61,16 @@ $ npm run test:cov
 
 ```
 [ ] Filtro na listagem de movimentações por data (data inicial e data final);
-[ ] Paginação na listagem de movimentações.
+[x] Paginação na listagem de movimentações.
 ```
 
 ### Desenvolvedor Pleno
 
 ```
 [ ] Todos os requisitos do Júnior;
-[ ] API Rest semântica (se escolheu desenvolver uma API Rest);
-[ ] Arquitetura minimamente escalável;
-[ ] Cobertura mínima de testes automatizados.
+[x] API Rest semântica (se escolheu desenvolver uma API Rest);
+[x] Arquitetura minimamente escalável;
+[x] Cobertura mínima de testes automatizados.
 ```
 
 ### Desenvolvedor Sênior
