@@ -51,6 +51,8 @@ export class EditTransactionUseCase {
     transaction.type = type
     transaction.value = value
 
+    // TODO validate balance before edit a transaction
+
     await this.transactionsRepository.save(transaction)
 
     return right({

@@ -27,6 +27,7 @@ export class CreateTransactionUseCase {
     type,
     value,
   }: CreateTransactionUseCaseRequest): Promise<CreateTransactionUseCaseResponse> {
+    // TODO validate balance before create a transaction
     const transaction = Transaction.create({
       userId: new UniqueEntityID(userId),
       description,
