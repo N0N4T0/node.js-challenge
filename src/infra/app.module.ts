@@ -4,6 +4,7 @@ import { envSchema } from './env/env'
 import { AuthModule } from './auth/auth.module'
 import { HttpModule } from './http/http.module'
 import { EnvModule } from './env/env.module'
+import { CacheModule } from '@nestjs/cache-manager'
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { EnvModule } from './env/env.module'
       validate: (env) => envSchema.parse(env),
       isGlobal: true,
     }),
+    CacheModule.register(),
     AuthModule,
     HttpModule,
     EnvModule,
