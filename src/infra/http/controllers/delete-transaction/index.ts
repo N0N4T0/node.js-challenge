@@ -8,6 +8,11 @@ import {
 import { DeleteTransactionUseCase } from '@/infra/domain/finance'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
+import { NegativeBalanceError, NotAllowedError } from '@/core'
+import {
+  NegativeBalanceForbiddenException,
+  NotAllowedException,
+} from '../exceptions'
 
 @Controller('/transactions/:id')
 export class DeleteTransactionController {
@@ -27,7 +32,16 @@ export class DeleteTransactionController {
     })
 
     if (result.isLeft()) {
-      throw new BadRequestException()
+      const error = result.value
+
+      switch (error.constructor) {
+        case NegativeBalanceError:
+          throw new NegativeBalanceForbiddenException()
+        case NotAllowedError:
+          throw new NotAllowedException()
+        default:
+          throw new BadRequestException()
+      }
     }
   }
 }

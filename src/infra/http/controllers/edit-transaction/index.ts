@@ -6,12 +6,16 @@ import {
   Param,
   Put,
 } from '@nestjs/common'
-import { TransactionType } from '@/core'
+import { NegativeBalanceError, NotAllowedError, TransactionType } from '@/core'
 import { EditTransactionUseCase } from '@/infra/domain/finance'
 import { z } from 'zod'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
+import {
+  NegativeBalanceForbiddenException,
+  NotAllowedException,
+} from '../exceptions'
 
 const editTransactionBodySchema = z.object({
   description: z.string(),
@@ -46,7 +50,16 @@ export class EditTransactionController {
     })
 
     if (result.isLeft()) {
-      throw new BadRequestException()
+      const error = result.value
+
+      switch (error.constructor) {
+        case NegativeBalanceError:
+          throw new NegativeBalanceForbiddenException()
+        case NotAllowedError:
+          throw new NotAllowedException()
+        default:
+          throw new BadRequestException()
+      }
     }
   }
 }

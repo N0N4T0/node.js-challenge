@@ -1,10 +1,11 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common'
-import { TransactionType } from '@/core'
+import { NegativeBalanceError, TransactionType } from '@/core'
 import { CreateTransactionUseCase } from '@/infra/domain/finance'
 import { z } from 'zod'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
+import { NegativeBalanceForbiddenException } from '../exceptions'
 
 const createTransactionBodySchema = z.object({
   description: z.string(),
@@ -36,7 +37,14 @@ export class CreateTransactionController {
     })
 
     if (result.isLeft()) {
-      throw new BadRequestException()
+      const error = result.value
+
+      switch (error.constructor) {
+        case NegativeBalanceError:
+          throw new NegativeBalanceForbiddenException()
+        default:
+          throw new BadRequestException()
+      }
     }
   }
 }
