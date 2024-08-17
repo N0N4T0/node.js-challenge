@@ -18,9 +18,56 @@ Um estudante a fim de poupar gastos e controlar suas finanças pessoais resolveu
 
 ### Installation
 
+1. Instalar dependências do projeto
+
 ```bash
 $ npm install
 ```
+
+2. Baixar migrations
+
+```
+$ npx migrate dev
+```
+
+3. Adicionar chaves no arquivo .env
+
+- Execute o script abaixo para otimizar o processo de gerar as chaves: **_JWT_PRIVATE_KEY_** e **_JWT_PUBLIC_KEY_**
+
+#### Gerar a chave privada
+
+```
+openssl genpkey -algorithm RSA -out private.key -pkeyopt rsa_keygen_bits:2048
+```
+
+#### Gerar a chave pública
+
+```
+openssl rsa -pubout -in private.key -out public.key -outform PEM
+```
+
+#### Converter a chave privada para base64
+
+```
+JWT_PRIVATE_KEY=$(openssl base64 -in private.key -A)
+```
+
+#### Converter a chave pública para base64
+
+```
+JWT_PUBLIC_KEY=$(openssl base64 -in public.key -A)
+```
+
+#### Adicionar as chaves ao arquivo .env
+
+```
+echo "JWT_PRIVATE_KEY=\"$JWT_PRIVATE_KEY\"" >> .env
+
+echo "JWT_PUBLIC_KEY=\"$JWT_PUBLIC_KEY\"" >> .env
+```
+
+Por último adicione o o valor para DATABASE*URL
+\*\*\_DATABASE_URL="postgresql://postgres:docker@localhost:5432/personal-finance?schema=public"*\*\*
 
 ### Running the app
 
@@ -91,7 +138,7 @@ kinvo-finance-api.json
 ### Plus
 
 ```
-[ ] Cache;
+[x] Cache;
 [ ] Segurança da aplicação;
 [ ] Deploy.
 ```
