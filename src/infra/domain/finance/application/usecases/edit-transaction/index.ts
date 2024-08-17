@@ -4,6 +4,7 @@ import { TransactionsRepository } from '@/infra/domain/finance/application/repos
 import {
   Either,
   left,
+  NegativeBalanceError,
   NotAllowedError,
   ResourceNotFoundError,
   right,
@@ -19,7 +20,7 @@ export interface EditTransactionUseCaseRequest {
 }
 
 type EditTransactionUseCaseResponse = Either<
-  ResourceNotFoundError | NotAllowedError,
+  ResourceNotFoundError | NotAllowedError | NegativeBalanceError,
   {
     transaction: Transaction
   }
@@ -51,13 +52,12 @@ export class EditTransactionUseCase {
     transaction.type = type
     transaction.value = value
 
-    const { sumOfCredits } = await this.transactionsRepository.getBalance()
+    const { extract } = await this.transactionsRepository.getBalance()
 
-    if (
-      transaction.type === TransactionType.DEBIT &&
-      transaction.value > sumOfCredits
-    ) {
-      return left(new NotAllowedError())
+    const willNegativeBalance = extract < 0
+
+    if (willNegativeBalance) {
+      return left(new NegativeBalanceError())
     }
 
     await this.transactionsRepository.save(transaction)

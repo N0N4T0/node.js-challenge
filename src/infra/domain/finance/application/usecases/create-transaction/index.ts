@@ -4,7 +4,7 @@ import { TransactionsRepository } from '@/infra/domain/finance/application/repos
 import {
   Either,
   left,
-  NotAllowedError,
+  NegativeBalanceError,
   right,
   TransactionType,
   UniqueEntityID,
@@ -18,7 +18,7 @@ export interface CreateTransactionUseCaseRequest {
 }
 
 type CreateTransactionUseCaseResponse = Either<
-  NotAllowedError,
+  NegativeBalanceError,
   {
     transaction: Transaction
   }
@@ -36,8 +36,12 @@ export class CreateTransactionUseCase {
   }: CreateTransactionUseCaseRequest): Promise<CreateTransactionUseCaseResponse> {
     const { extract } = await this.transactionsRepository.getBalance()
 
-    if (extract === 0 && type === TransactionType.DEBIT) {
-      return left(new NotAllowedError())
+    const willNegativeBalance = extract < 0
+    const firstTransactionWillNegativeBalance =
+      extract === 0 && type === TransactionType.DEBIT
+
+    if (willNegativeBalance || firstTransactionWillNegativeBalance) {
+      return left(new NegativeBalanceError())
     }
 
     const transaction = Transaction.create({

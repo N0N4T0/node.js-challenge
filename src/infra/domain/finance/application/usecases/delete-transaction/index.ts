@@ -4,6 +4,7 @@ import { TransactionsRepository } from '@/infra/domain/finance/application/repos
 import {
   Either,
   left,
+  NegativeBalanceError,
   NotAllowedError,
   ResourceNotFoundError,
   right,
@@ -32,12 +33,20 @@ export class DeleteTransactionUseCase {
     const transaction =
       await this.transactionsRepository.findById(transactionId)
 
+    const { extract } = await this.transactionsRepository.getBalance()
+
     if (!transaction) {
       return left(new ResourceNotFoundError())
     }
 
     if (userId !== transaction.userId?.toString()) {
       return left(new NotAllowedError())
+    }
+
+    const willNegativeBalance = extract < 0
+
+    if (willNegativeBalance) {
+      return left(new NegativeBalanceError())
     }
 
     await this.transactionsRepository.delete(transaction)
