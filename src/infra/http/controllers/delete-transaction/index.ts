@@ -12,7 +12,7 @@ import { NegativeBalanceError, NotAllowedError } from '@/core'
 import {
   NegativeBalanceForbiddenException,
   NotAllowedException,
-} from '../exceptions'
+} from '../../exceptions'
 
 @Controller('/transactions/:id')
 export class DeleteTransactionController {

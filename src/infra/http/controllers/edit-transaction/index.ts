@@ -15,7 +15,7 @@ import { ZodValidationPipe } from '../../pipes/zod-validation-pipe'
 import {
   NegativeBalanceForbiddenException,
   NotAllowedException,
-} from '../exceptions'
+} from '../../exceptions'
 
 const editTransactionBodySchema = z.object({
   description: z.string(),
