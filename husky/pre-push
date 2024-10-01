@@ -1,0 +1,2 @@
+npm run test:pre-push
+npx madge --circular --extensions ts ./ --ts-config tsconfig.json
